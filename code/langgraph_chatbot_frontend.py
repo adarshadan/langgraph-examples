@@ -18,17 +18,22 @@ if 'message_history' not in st.session_state:
 for msg in st.session_state.message_history:
     with st.chat_message(msg['role']):
         st.text(msg['content'])
-        print(f'Role: {msg['role']}, Message: {msg['content']}')
+        print(f"Role: {msg['role']}, Message: {msg['content']}")
+
 
 user_message = st.chat_input('Type here....')
+ai_message = ""
+
 if user_message:
     with st.chat_message('user'):
         st.text(user_message)
 
     with st.chat_message('assistant'):
-        llm_response = workflow.invoke({"messages": [HumanMessage(user_message)]}, config=config)
-        ai_message = llm_response['messages'][-1].content
-        st.text(ai_message)
+        stream_object = workflow.stream({"messages": [HumanMessage(user_message)]},
+                                        config=config,
+                                        stream_mode='messages'
+                                        )
+        ai_message = st.write_stream( message_chunk.content for message_chunk, _ in stream_object)
 
     st.session_state.message_history.append({'role': 'user', 'content': user_message})
-    st.session_state.message_history.append({'role': 'assistant', 'content': ai_message})
+    st.session_state.message_history.append({'role': 'assistant', 'content': ai_message })
