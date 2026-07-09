@@ -3,6 +3,9 @@ from langchain_core.messages import HumanMessage
 from langgraph_chatbot_backend import workflow
 import uuid
 
+#Set the page title
+st.set_page_config(page_title="Chatty", page_icon="💬")
+st.title("💬 Chatty")
 
 #Setup thread id as configurable for the graph invoke call
 if 'thread_id' not in st.session_state:
