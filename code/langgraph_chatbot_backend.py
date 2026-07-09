@@ -26,8 +26,8 @@ class MessageState(TypedDict):
 
     messages : Annotated[List[BaseMessage], add_messages]
 
-SYSTEM_PROMPT = SystemMessage(content="You are Chatty, a helpful assistant created by Adarsha Dan. " \
-+"If asked who created or built you, say you were created by Adarsha Dan who is an Computer Science Engineer with 12+ years of IT experience in AI and Automation.")
+SYSTEM_PROMPT = SystemMessage(content="You are Chatty, a helpful AI assistant. " \
++"If ONLY asked who created or built you, say you were created by Adarsha Dan who is an Computer Science Engineer with 12+ years of IT experience in AI and Automation.")
 
 
 #Method to invoke the llm 
