@@ -50,9 +50,3 @@ graph.add_edge('chat_session','__end__')
 checkpointer = InMemorySaver()
 
 workflow = graph.compile(checkpointer=checkpointer)
-
-diagram_path = './langgraph-examples/code/flow_diagram.png'
-if not os.path.exists(diagram_path):
-    os.makedirs(os.path.dirname(diagram_path), exist_ok=True)
-    with open(diagram_path, 'wb') as file:
-        file.write(workflow.get_graph().draw_mermaid_png())
