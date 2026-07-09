@@ -5,7 +5,7 @@ import os
 
 from langgraph.graph import StateGraph
 from langgraph.checkpoint.memory import InMemorySaver
-from langchain_core.messages import BaseMessage,HumanMessage
+from langchain_core.messages import BaseMessage,SystemMessage
 from langgraph.graph import add_messages
 from langchain_groq import ChatGroq
 
@@ -26,11 +26,14 @@ class MessageState(TypedDict):
 
     messages : Annotated[List[BaseMessage], add_messages]
 
+SYSTEM_PROMPT = SystemMessage(content="You are Chatty, a helpful assistant created by Adarsha Dan. " \
++"If asked who created or built you, say you were created by Adarsha Dan who is an Computer Science Engineer with 12+ years of IT experience in AI and Automation.")
+
 
 #Method to invoke the llm 
 def chat_session(state:MessageState):
 
-    current_messages = state['messages']
+    current_messages = [SYSTEM_PROMPT] + state['messages']
 
     response = llm.invoke(current_messages)
 
