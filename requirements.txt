@@ -3,5 +3,4 @@ langgraph
 langchain-core
 langchain-groq
 python-dotenv
-sqlite3
 langgraph-checkpoint-sqlite
