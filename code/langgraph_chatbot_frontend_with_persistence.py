@@ -44,8 +44,11 @@ if 'message_history' not in st.session_state:
 if 'thread_id' not in st.session_state:
     st.session_state.thread_id = generate_thread_id()
 
+if 'user_id' not in st.session_state:
+    st.session_state.user_id = generate_thread_id()
+
 if 'chat_threads' not in st.session_state:
-    st.session_state.chat_threads=get_all_unique_threads()
+    st.session_state.chat_threads=get_all_unique_threads(st.session_state.user_id)
 
 add_thread(st.session_state.thread_id)
 
@@ -93,7 +96,7 @@ if user_message:
         st.text(user_message)
     if not st.session_state.chat_threads[st.session_state.thread_id]:
         st.session_state.chat_threads[st.session_state.thread_id] = generate_label(user_message)
-        save_label(st.session_state.thread_id, st.session_state.chat_threads[st.session_state.thread_id])
+        save_label(st.session_state.thread_id, st.session_state.chat_threads[st.session_state.thread_id],st.session_state.user_id)
 
     with st.chat_message('assistant'):
         stream_object = workflow.stream({"messages": [HumanMessage(user_message)]},

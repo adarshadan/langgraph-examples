@@ -58,29 +58,31 @@ def generate_label(input_message:str) -> str:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Get all the unique threads
 
-def get_all_unique_threads():
+def get_all_unique_threads(user_id:str):
 
-    cursor = conn.execute('SELECT thread_id, label from thread_label_mapping')
+    cursor = conn.execute('SELECT thread_id, label from thread_label_mapping WHERE user_id = ?', (user_id,))
     rows = cursor.fetchall()
 
     label_map = {thread_id:label for thread_id,label in rows}
 
     all_threads = {}
     for checkpoint in checkpointer.list(None):
-        thread_id = checkpoint.config['configurable']['thread_id']
-        all_threads[thread_id] = label_map.get(thread_id,'')
+        chk_thread_id = checkpoint.config['configurable']['thread_id']
+
+        if chk_thread_id in label_map:
+            all_threads[chk_thread_id] = label_map.get(chk_thread_id,'')
 
     return all_threads
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #Method to insert the thread_id,label mapping into the SQLite db table
 
-def save_label(thread_id:str, label:str):
+def save_label(thread_id:str, label:str,user_id:str):
 
     conn.execute('''INSERT INTO thread_label_mapping
-                 VALUES(?,?)
+                 VALUES(?,?,?)
                  ON CONFLICT(thread_id) 
                  DO UPDATE 
-                 SET label = excluded.label''',(thread_id,label))
+                 SET label = excluded.label''',(thread_id,label,user_id))
     conn.commit()
  
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -100,7 +102,8 @@ conn = sqlite3.connect(database='./chatbot.db',check_same_thread=False)
 checkpointer = SqliteSaver(conn=conn)
 conn.execute('''CREATE TABLE IF NOT EXISTS thread_label_mapping
              (thread_id TEXT PRIMARY KEY,
-             label TEXT) ''')
+             label TEXT,
+             user_id TEXT) ''')
 conn.commit()
 
 workflow = graph.compile(checkpointer=checkpointer)
