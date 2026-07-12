@@ -87,7 +87,11 @@ for msg in st.session_state.message_history:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #Get user input and stream responses on the UI
 
-config = {'configurable': {'thread_id': st.session_state.thread_id}}
+config = {
+    'configurable': {'thread_id': st.session_state.thread_id},
+    'metadata': {'thread_id': st.session_state.thread_id},
+    'run_name': 'chat_turn'
+    }
 user_message = st.chat_input('Type here....')
 ai_message = ""
 
