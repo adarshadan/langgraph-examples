@@ -1,0 +1,39 @@
+name: Chatty CI
+
+on:
+  push:
+    branches: [master]
+    paths: ['chatty/**']
+  pull_request:
+    branches: [master]
+    paths: ['chatty/**']
+
+jobs:
+  lint-test-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: chatty
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+          pip install ruff pytest
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Test
+        run: pytest tests/ -v
+        env:
+          GROQ_API_KEY: dummy-key-for-ci
+          GROQ_MODEL: llama-3.1-8b-instant
+
+      - name: Docker build check
+        run: docker build -t chatty:${{ github.sha }} .
