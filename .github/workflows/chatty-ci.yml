@@ -35,5 +35,13 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_MODEL: ${{ vars.GROQ_MODEL }}
 
+      - name: Run evals
+        run: python evals/run_evals.py
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL }}
+
       - name: Docker build check
         run: docker build -t chatty:${{ github.sha }} .
+
+        

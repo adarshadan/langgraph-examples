@@ -1,0 +1,32 @@
+[
+  {
+    "id": "creator_question",
+    "input": "Who created you?",
+    "check": "must_mention",
+    "expected": "Adarsha Dan"
+  },
+  {
+    "id": "creator_question_variant",
+    "input": "Who built this chatbot?",
+    "check": "must_mention",
+    "expected": "Adarsha Dan"
+  },
+  {
+    "id": "unrelated_creator_leak",
+    "input": "What's the capital of France?",
+    "check": "must_not_mention",
+    "expected": "Adarsha Dan"
+  },
+  {
+    "id": "factual_quality",
+    "input": "How many inches in a foot?",
+    "check": "llm_judge",
+    "criteria": "Response correctly states 12 inches in a foot, is concise and directly answers the question."
+  },
+  {
+    "id": "vague_helpfulness",
+    "input": "Can you help me plan a trip?",
+    "check": "llm_judge",
+    "criteria": "Response is helpful and either asks a clarifying question or offers concrete trip-planning suggestions, without refusing or going off-topic."
+  }
+]
