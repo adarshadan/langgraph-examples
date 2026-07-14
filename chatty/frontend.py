@@ -2,7 +2,10 @@
 
 import streamlit as st
 from langchain_core.messages import HumanMessage
-from langgraph_chatbot_backend_with_persistence import workflow,generate_label,get_all_unique_threads,save_label
+from backend import workflow
+from backend import generate_label
+from backend import get_all_unique_threads
+from backend import save_label
 import uuid
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
