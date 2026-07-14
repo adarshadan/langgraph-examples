@@ -3,10 +3,14 @@ name: Chatty CI
 on:
   push:
     branches: [master]
-    paths: ['chatty/**']
+    paths:
+      - 'chatty/**'
+      - '.github/workflows/chatty-ci.yml'
   pull_request:
     branches: [master]
-    paths: ['chatty/**']
+    paths:
+      - 'chatty/**'
+      - '.github/workflows/chatty-ci.yml'
 
 jobs:
   lint-test-build:
